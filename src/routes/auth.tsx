@@ -1,0 +1,158 @@
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
+import { ShieldCheck } from "lucide-react";
+import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { friendlyError } from "@/lib/crm";
+
+export const Route = createFileRoute("/auth")({
+  ssr: false,
+  head: () => ({
+    meta: [
+      { title: "Acesso ao CRM | Garantia e Proteção" },
+      { name: "description", content: "Área restrita aos colaboradores da Garantia e Proteção Seguros." },
+      { property: "og:title", content: "Acesso ao CRM | Garantia e Proteção" },
+      { property: "og:description", content: "Área restrita aos colaboradores da Garantia e Proteção Seguros." },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  component: AuthPage,
+});
+
+function AuthPage() {
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }) => {
+      if (data.session) navigate({ to: "/dashboard", replace: true });
+    });
+  }, [navigate]);
+
+  async function signIn(e: React.FormEvent) {
+    e.preventDefault();
+    setLoading(true);
+    const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
+    setLoading(false);
+    if (error) return toast.error(friendlyError(error, "Não foi possível entrar."));
+    toast.success("Bem-vindo de volta!");
+    navigate({ to: "/dashboard", replace: true });
+  }
+
+  async function signUp(e: React.FormEvent) {
+    e.preventDefault();
+    setLoading(true);
+    const { data, error } = await supabase.auth.signUp({
+      email: email.trim(),
+      password,
+      options: { data: { name }, emailRedirectTo: window.location.origin },
+    });
+    setLoading(false);
+    if (error) return toast.error(friendlyError(error, "Não foi possível criar o acesso."));
+    if (data.session) {
+      toast.success("Conta criada com sucesso.");
+      navigate({ to: "/dashboard", replace: true });
+    } else {
+      toast.success("Confirme seu e-mail para ativar o acesso.");
+    }
+  }
+
+  async function recover() {
+    if (!email.trim()) return toast.error("Informe seu e-mail para recuperar a senha.");
+    const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    if (error) return toast.error("Não foi possível enviar o e-mail de recuperação.");
+    toast.success("Enviamos um link de recuperação para seu e-mail.");
+  }
+
+  return (
+    <div className="flex min-h-screen items-center justify-center bg-sidebar px-4 py-10">
+      <div className="w-full max-w-md">
+        <div className="mb-6 flex flex-col items-center text-center">
+          <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-sidebar-primary text-sidebar-primary-foreground">
+            <ShieldCheck className="h-6 w-6" />
+          </span>
+          <h1 className="mt-3 text-xl font-semibold text-sidebar-foreground">Garantia e Proteção</h1>
+          <p className="text-sm text-sidebar-foreground/70">CRM interno · Plano de Saúde</p>
+        </div>
+
+        <Card className="shadow-lg">
+          <CardHeader>
+            <CardTitle>Acesso restrito</CardTitle>
+            <CardDescription>Use suas credenciais corporativas.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Tabs defaultValue="login">
+              <TabsList className="grid w-full grid-cols-2">
+                <TabsTrigger value="login">Entrar</TabsTrigger>
+                <TabsTrigger value="signup">Criar acesso</TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="login">
+                <form onSubmit={signIn} className="space-y-4 pt-2">
+                  <div className="space-y-1.5">
+                    <Label htmlFor="email">E-mail</Label>
+                    <Input id="email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label htmlFor="password">Senha</Label>
+                    <Input
+                      id="password"
+                      type="password"
+                      required
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
+                  </div>
+                  <Button type="submit" className="w-full" disabled={loading}>
+                    Entrar
+                  </Button>
+                  <button type="button" onClick={recover} className="w-full text-sm text-primary hover:underline">
+                    Esqueci minha senha
+                  </button>
+                </form>
+              </TabsContent>
+
+              <TabsContent value="signup">
+                <form onSubmit={signUp} className="space-y-4 pt-2">
+                  <div className="space-y-1.5">
+                    <Label htmlFor="name">Nome completo</Label>
+                    <Input id="name" required value={name} onChange={(e) => setName(e.target.value)} />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label htmlFor="email2">E-mail</Label>
+                    <Input id="email2" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
+                  </div>
+                  <div className="space-y-1.5">
+                    <Label htmlFor="password2">Senha</Label>
+                    <Input
+                      id="password2"
+                      type="password"
+                      required
+                      minLength={6}
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
+                  </div>
+                  <Button type="submit" className="w-full" disabled={loading}>
+                    Criar acesso
+                  </Button>
+                </form>
+              </TabsContent>
+            </Tabs>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}
