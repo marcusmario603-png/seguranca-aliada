@@ -14,16 +14,424 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      beneficiaries: {
+        Row: {
+          birth_date: string | null
+          cpf: string | null
+          created_at: string
+          id: string
+          name: string
+          notes: string | null
+          process_id: string
+          relationship: string
+          updated_at: string
+        }
+        Insert: {
+          birth_date?: string | null
+          cpf?: string | null
+          created_at?: string
+          id?: string
+          name: string
+          notes?: string | null
+          process_id: string
+          relationship?: string
+          updated_at?: string
+        }
+        Update: {
+          birth_date?: string | null
+          cpf?: string | null
+          created_at?: string
+          id?: string
+          name?: string
+          notes?: string | null
+          process_id?: string
+          relationship?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "beneficiaries_process_id_fkey"
+            columns: ["process_id"]
+            isOneToOne: false
+            referencedRelation: "processes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      clients: {
+        Row: {
+          active: boolean
+          address: string | null
+          birth_date: string | null
+          city: string | null
+          client_type: Database["public"]["Enums"]["client_type"]
+          cnpj: string | null
+          company_name: string | null
+          complement: string | null
+          cpf: string | null
+          created_at: string
+          created_by: string | null
+          deleted_at: string | null
+          email: string | null
+          full_name: string | null
+          id: string
+          neighborhood: string | null
+          notes: string | null
+          number: string | null
+          phone: string | null
+          state: string | null
+          trade_name: string | null
+          updated_at: string
+          whatsapp: string | null
+          zip_code: string | null
+        }
+        Insert: {
+          active?: boolean
+          address?: string | null
+          birth_date?: string | null
+          city?: string | null
+          client_type: Database["public"]["Enums"]["client_type"]
+          cnpj?: string | null
+          company_name?: string | null
+          complement?: string | null
+          cpf?: string | null
+          created_at?: string
+          created_by?: string | null
+          deleted_at?: string | null
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          neighborhood?: string | null
+          notes?: string | null
+          number?: string | null
+          phone?: string | null
+          state?: string | null
+          trade_name?: string | null
+          updated_at?: string
+          whatsapp?: string | null
+          zip_code?: string | null
+        }
+        Update: {
+          active?: boolean
+          address?: string | null
+          birth_date?: string | null
+          city?: string | null
+          client_type?: Database["public"]["Enums"]["client_type"]
+          cnpj?: string | null
+          company_name?: string | null
+          complement?: string | null
+          cpf?: string | null
+          created_at?: string
+          created_by?: string | null
+          deleted_at?: string | null
+          email?: string | null
+          full_name?: string | null
+          id?: string
+          neighborhood?: string | null
+          notes?: string | null
+          number?: string | null
+          phone?: string | null
+          state?: string | null
+          trade_name?: string | null
+          updated_at?: string
+          whatsapp?: string | null
+          zip_code?: string | null
+        }
+        Relationships: []
+      }
+      documents: {
+        Row: {
+          client_id: string
+          created_at: string
+          doc_type: string
+          file_size: number | null
+          id: string
+          mime_type: string | null
+          original_name: string
+          process_id: string | null
+          storage_path: string
+          uploaded_by: string | null
+        }
+        Insert: {
+          client_id: string
+          created_at?: string
+          doc_type?: string
+          file_size?: number | null
+          id?: string
+          mime_type?: string | null
+          original_name: string
+          process_id?: string | null
+          storage_path: string
+          uploaded_by?: string | null
+        }
+        Update: {
+          client_id?: string
+          created_at?: string
+          doc_type?: string
+          file_size?: number | null
+          id?: string
+          mime_type?: string | null
+          original_name?: string
+          process_id?: string | null
+          storage_path?: string
+          uploaded_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "documents_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "documents_process_id_fkey"
+            columns: ["process_id"]
+            isOneToOne: false
+            referencedRelation: "processes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      operators: {
+        Row: {
+          active: boolean
+          created_at: string
+          id: string
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          created_at?: string
+          id?: string
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          created_at?: string
+          id?: string
+          name?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      process_history: {
+        Row: {
+          action: string
+          created_at: string
+          id: string
+          new_status: Database["public"]["Enums"]["process_status"] | null
+          notes: string | null
+          previous_status: Database["public"]["Enums"]["process_status"] | null
+          process_id: string
+          user_id: string | null
+        }
+        Insert: {
+          action?: string
+          created_at?: string
+          id?: string
+          new_status?: Database["public"]["Enums"]["process_status"] | null
+          notes?: string | null
+          previous_status?: Database["public"]["Enums"]["process_status"] | null
+          process_id: string
+          user_id?: string | null
+        }
+        Update: {
+          action?: string
+          created_at?: string
+          id?: string
+          new_status?: Database["public"]["Enums"]["process_status"] | null
+          notes?: string | null
+          previous_status?: Database["public"]["Enums"]["process_status"] | null
+          process_id?: string
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "process_history_process_id_fkey"
+            columns: ["process_id"]
+            isOneToOne: false
+            referencedRelation: "processes"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      processes: {
+        Row: {
+          accommodation: string | null
+          assistance_segment: string | null
+          cancellation_reason: string | null
+          cancelled_date: string | null
+          client_id: string
+          code: number
+          coparticipation: boolean
+          coverage: string | null
+          created_at: string
+          deleted_at: string | null
+          effective_date: string | null
+          id: string
+          lives_quantity: number
+          network_type: string | null
+          notes: string | null
+          operator_id: string | null
+          plan_type: string
+          proposal_date: string | null
+          reimbursement: boolean
+          responsible_user_id: string | null
+          signed_date: string | null
+          status: Database["public"]["Enums"]["process_status"]
+          updated_at: string
+        }
+        Insert: {
+          accommodation?: string | null
+          assistance_segment?: string | null
+          cancellation_reason?: string | null
+          cancelled_date?: string | null
+          client_id: string
+          code?: number
+          coparticipation?: boolean
+          coverage?: string | null
+          created_at?: string
+          deleted_at?: string | null
+          effective_date?: string | null
+          id?: string
+          lives_quantity?: number
+          network_type?: string | null
+          notes?: string | null
+          operator_id?: string | null
+          plan_type?: string
+          proposal_date?: string | null
+          reimbursement?: boolean
+          responsible_user_id?: string | null
+          signed_date?: string | null
+          status?: Database["public"]["Enums"]["process_status"]
+          updated_at?: string
+        }
+        Update: {
+          accommodation?: string | null
+          assistance_segment?: string | null
+          cancellation_reason?: string | null
+          cancelled_date?: string | null
+          client_id?: string
+          code?: number
+          coparticipation?: boolean
+          coverage?: string | null
+          created_at?: string
+          deleted_at?: string | null
+          effective_date?: string | null
+          id?: string
+          lives_quantity?: number
+          network_type?: string | null
+          notes?: string | null
+          operator_id?: string | null
+          plan_type?: string
+          proposal_date?: string | null
+          reimbursement?: boolean
+          responsible_user_id?: string | null
+          signed_date?: string | null
+          status?: Database["public"]["Enums"]["process_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "processes_client_id_fkey"
+            columns: ["client_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "processes_operator_id_fkey"
+            columns: ["operator_id"]
+            isOneToOne: false
+            referencedRelation: "operators"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          active: boolean
+          cpf: string | null
+          created_at: string
+          email: string | null
+          id: string
+          name: string
+          phone: string | null
+          position: string | null
+          updated_at: string
+        }
+        Insert: {
+          active?: boolean
+          cpf?: string | null
+          created_at?: string
+          email?: string | null
+          id: string
+          name?: string
+          phone?: string | null
+          position?: string | null
+          updated_at?: string
+        }
+        Update: {
+          active?: boolean
+          cpf?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          name?: string
+          phone?: string | null
+          position?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "collaborator"
+      client_type: "pf" | "pj"
+      process_status:
+        | "lead"
+        | "qualified"
+        | "proposal_sent"
+        | "proposal_refused"
+        | "cancelled"
+        | "proposal_signed"
+        | "active_contract"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +558,18 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "collaborator"],
+      client_type: ["pf", "pj"],
+      process_status: [
+        "lead",
+        "qualified",
+        "proposal_sent",
+        "proposal_refused",
+        "cancelled",
+        "proposal_signed",
+        "active_contract",
+      ],
+    },
   },
 } as const
