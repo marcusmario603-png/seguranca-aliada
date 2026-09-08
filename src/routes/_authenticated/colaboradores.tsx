@@ -222,11 +222,35 @@ function CollaboratorsPage() {
               </p>
               <div className="flex items-center justify-between border-t pt-2">
                 <span className="text-sm">{p.active ? "Ativo" : "Inativo"}</span>
-                <Switch
-                  checked={p.active}
-                  disabled={!session?.isAdmin}
-                  onCheckedChange={(v) => toggleActive.mutate({ id: p.id, active: v })}
-                />
+                <div className="flex items-center gap-2">
+                  <Switch
+                    checked={p.active}
+                    disabled={!session?.isAdmin}
+                    onCheckedChange={(v) => toggleActive.mutate({ id: p.id, active: v })}
+                  />
+                  {session?.isAdmin && p.id !== session.userId && (
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button variant="ghost" size="icon" aria-label={`Excluir ${p.name}`}>
+                          <Trash2 className="h-4 w-4 text-destructive" />
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>Excluir usuário</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            O acesso de {p.name} será removido definitivamente. Os registros criados por ele
+                            permanecem no sistema.
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                          <AlertDialogAction onClick={() => removeUser.mutate(p.id)}>Excluir</AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  )}
+                </div>
               </div>
             </CardContent>
           </Card>
