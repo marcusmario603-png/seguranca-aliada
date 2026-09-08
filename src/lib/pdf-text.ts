@@ -16,6 +16,5 @@ export async function extractPdfText(file: File, maxPages = 12): Promise<string>
       .join(" ");
     pages.push(text);
   }
-  await doc.destroy();
   return pages.join("\n\n").replace(/[ \t]+/g, " ").trim();
 }

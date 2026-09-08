@@ -258,7 +258,7 @@ export function ImportClientDialog({
   );
 }
 
-function Line({ label, value }: { label: string; value?: string | null }) {
+function Line({ label, value }: { label: string; value?: string | null | undefined }) {
   return (
     <p className="flex justify-between gap-3">
       <span className="text-muted-foreground">{label}</span>
