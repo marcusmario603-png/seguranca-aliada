@@ -17,7 +17,7 @@ import { useSession } from "@/hooks/use-session";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
-import logoAsset from "@/assets/logo-garantia-protecao.jpg.asset.json";
+import logoAsset from "@/assets/logo-garantia-protecao.png.asset.json";
 
 export const Route = createFileRoute("/_authenticated")({
   ssr: false,
