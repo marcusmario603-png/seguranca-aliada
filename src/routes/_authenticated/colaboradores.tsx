@@ -315,6 +315,81 @@ function CollaboratorsPage() {
         ))}
       </div>
 
+      <Dialog open={!!editing} onOpenChange={(o) => !o && setEditing(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Editar dados</DialogTitle>
+            <DialogDescription>Atualize nome, cargo e contato do colaborador.</DialogDescription>
+          </DialogHeader>
+          {editing && (
+            <div className="grid gap-3">
+              <div className="grid gap-1.5">
+                <Label htmlFor="e-name">Nome</Label>
+                <Input
+                  id="e-name"
+                  value={editing.name}
+                  onChange={(e) => setEditing({ ...editing, name: e.target.value })}
+                />
+              </div>
+              <div className="grid gap-1.5">
+                <Label htmlFor="e-position">Cargo</Label>
+                <Input
+                  id="e-position"
+                  value={editing.position}
+                  onChange={(e) => setEditing({ ...editing, position: e.target.value })}
+                />
+              </div>
+              <div className="grid gap-1.5">
+                <Label htmlFor="e-phone">Telefone</Label>
+                <Input
+                  id="e-phone"
+                  value={editing.phone}
+                  onChange={(e) => setEditing({ ...editing, phone: e.target.value })}
+                />
+              </div>
+              <div className="grid gap-1.5">
+                <Label htmlFor="e-cpf">CPF</Label>
+                <Input id="e-cpf" value={editing.cpf} onChange={(e) => setEditing({ ...editing, cpf: e.target.value })} />
+              </div>
+              {session?.isAdmin && (
+                <div className="grid gap-1.5">
+                  <Label>Perfil</Label>
+                  <Select
+                    value={editing.role}
+                    onValueChange={(v) => setEditing({ ...editing, role: v as "admin" | "collaborator" })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="collaborator">Colaborador</SelectItem>
+                      <SelectItem value="admin">Administrador</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
+            </div>
+          )}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setEditing(null)}>
+              Cancelar
+            </Button>
+            <Button
+              onClick={() => {
+                if (!editing?.name.trim()) {
+                  toast.error("Informe o nome.");
+                  return;
+                }
+                saveEdit.mutate();
+              }}
+              disabled={saveEdit.isPending}
+            >
+              {saveEdit.isPending ? "Salvando..." : "Salvar"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
       {!session?.isAdmin && (
         <p className="text-xs text-muted-foreground">Somente administradores podem ativar ou desativar acessos.</p>
       )}
