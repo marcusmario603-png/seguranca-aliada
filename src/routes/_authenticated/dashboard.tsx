@@ -32,7 +32,7 @@ function Dashboard() {
   const byOperator = useMemo(() => {
     const map = new Map<string, number>();
     for (const p of processes) {
-      const name = (p as { operators?: { name?: string } }).operators?.name || "Sem operadora";
+      const name = p.operators?.name || "Sem operadora";
       map.set(name, (map.get(name) || 0) + 1);
     }
     return [...map.entries()].sort((a, b) => b[1] - a[1]);

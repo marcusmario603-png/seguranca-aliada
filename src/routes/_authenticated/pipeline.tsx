@@ -44,7 +44,7 @@ export function useMoveProcess() {
   return useMutation({
     mutationFn: async (input: { id: string; status: ProcessStatus; reason?: string }) => {
       const payload: Record<string, unknown> = { status: input.status };
-      if (input.status === "cancelled") payload.cancellation_reason = input.reason;
+      if (input.status === "cancelled") payload["cancellation_reason"] = input.reason;
       const { error } = await supabase.from("processes").update(payload as never).eq("id", input.id);
       if (error) throw error;
       return input.status;
@@ -103,14 +103,14 @@ function PipelinePage() {
                         params={{ id: p.id }}
                         className="line-clamp-2 text-sm font-medium hover:underline"
                       >
-                        {clientName((p as { clients: never }).clients)}
+                        {clientName(p.clients)}
                       </Link>
                       <p className="mt-1 text-xs text-muted-foreground">
-                        {p.plan_type} · {(p as { operators?: { name?: string } }).operators?.name || "Sem operadora"}
+                        {p.plan_type} · {p.operators?.name || "Sem operadora"}
                       </p>
                       <p className="text-xs text-muted-foreground">
                         {p.lives_quantity} vida(s) ·{" "}
-                        {(p as { profiles?: { name?: string } }).profiles?.name || "Sem responsável"}
+                        {p.profiles?.name || "Sem responsável"}
                       </p>
                       <Select value={p.status} onValueChange={(v) => handleChange(p.id, v as ProcessStatus)}>
                         <SelectTrigger className="mt-2 h-8 text-xs">

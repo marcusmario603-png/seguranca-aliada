@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import type { ProcessRow } from "@/lib/crm";
 
 export function useOperators() {
   return useQuery({
@@ -60,7 +61,7 @@ export function useProcesses() {
         .order("updated_at", { ascending: false })
         .limit(500);
       if (error) throw error;
-      return data;
+      return (data ?? []) as unknown as ProcessRow[];
     },
   });
 }
@@ -71,7 +72,7 @@ export function useProcess(id: string) {
     queryFn: async () => {
       const { data, error } = await supabase.from("processes").select(PROCESS_SELECT).eq("id", id).maybeSingle();
       if (error) throw error;
-      return data;
+      return (data ?? null) as unknown as ProcessRow | null;
     },
   });
 }

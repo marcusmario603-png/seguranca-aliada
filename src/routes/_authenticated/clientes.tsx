@@ -246,7 +246,7 @@ function Actions({
   id: string;
   onView: () => void;
   onEdit: () => void;
-  onDelete?: () => void;
+  onDelete?: (() => void) | undefined;
 }) {
   return (
     <>
