@@ -59,9 +59,11 @@ function AuthPage() {
     <div className="flex min-h-screen items-center justify-center bg-sidebar px-4 py-10">
       <div className="w-full max-w-md">
         <div className="mb-6 flex flex-col items-center text-center">
-          <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-sidebar-primary text-sidebar-primary-foreground">
-            <ShieldCheck className="h-6 w-6" />
-          </span>
+          <img
+            src={logoAsset.url}
+            alt="Garantia e Proteção"
+            className="h-20 w-auto object-contain"
+          />
           <h1 className="mt-3 text-xl font-semibold text-sidebar-foreground">Garantia e Proteção</h1>
           <p className="text-sm text-sidebar-foreground/70">CRM interno · Plano de Saúde</p>
         </div>
