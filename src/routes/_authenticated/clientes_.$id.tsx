@@ -181,7 +181,7 @@ function ClientDetail() {
             >
               <div>
                 <p className="text-sm font-medium">
-                  {p.plan_type} · {(p as { operators?: { name?: string } }).operators?.name || "Sem operadora"}
+                  {p.plan_type} · {p.operators?.name || "Sem operadora"}
                 </p>
                 <p className="text-xs text-muted-foreground">
                   {p.lives_quantity} vida(s) · criado em {formatDate(p.created_at)}

@@ -37,7 +37,7 @@ function ProcessesPage() {
   const [plan, setPlan] = useState("all");
 
   const filtered = processes.filter((p) => {
-    const c = (p as { clients: Parameters<typeof clientName>[0] }).clients;
+    const c = p.clients;
     const term = search.trim().toLowerCase();
     const matches =
       !term ||
@@ -119,16 +119,16 @@ function ProcessesPage() {
             <CardContent className="space-y-2 p-4">
               <div className="flex items-start justify-between gap-2">
                 <Link to="/processos/$id" params={{ id: p.id }} className="font-medium hover:underline">
-                  {clientName((p as { clients: never }).clients)}
+                  {clientName(p.clients)}
                 </Link>
                 <StatusBadge status={p.status as ProcessStatus} />
               </div>
               <p className="text-xs text-muted-foreground">
-                #{p.code} · {p.plan_type} · {(p as { operators?: { name?: string } }).operators?.name || "—"}
+                #{p.code} · {p.plan_type} · {p.operators?.name || "—"}
               </p>
               <p className="text-xs text-muted-foreground">
                 {p.lives_quantity} vida(s) · Resp.:{" "}
-                {(p as { profiles?: { name?: string } }).profiles?.name || "—"} · {formatDate(p.updated_at)}
+                {p.profiles?.name || "—"} · {formatDate(p.updated_at)}
               </p>
             </CardContent>
           </Card>

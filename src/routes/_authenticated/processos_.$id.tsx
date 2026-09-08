@@ -122,11 +122,11 @@ function ProcessDetail() {
 
   if (!process) return <p className="text-sm text-muted-foreground">Carregando processo…</p>;
 
-  const client = (process as { clients: Parameters<typeof clientName>[0] & { id: string } }).clients;
+  const client = process.clients;
   const details: [string, string][] = [
-    ["Operadora", (process as { operators?: { name?: string } }).operators?.name || "—"],
+    ["Operadora", process.operators?.name || "—"],
     ["Tipo de plano", process.plan_type],
-    ["Responsável", (process as { profiles?: { name?: string } }).profiles?.name || "—"],
+    ["Responsável", process.profiles?.name || "—"],
     ["Abrangência", process.coverage || "—"],
     ["Acomodação", process.accommodation || "—"],
     ["Rede", process.network_type || "—"],
