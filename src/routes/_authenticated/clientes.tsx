@@ -48,6 +48,7 @@ function ClientsPage() {
   const [search, setSearch] = useState("");
   const [typeFilter, setTypeFilter] = useState<"all" | "pf" | "pj">("all");
   const [open, setOpen] = useState(false);
+  const [importOpen, setImportOpen] = useState(false);
   const [editing, setEditing] = useState<AnyRow | null>(null);
   const [pendingDelete, setPendingDelete] = useState<AnyRow | null>(null);
 
@@ -80,14 +81,19 @@ function ClientsPage() {
           <h1 className="text-2xl font-semibold tracking-tight">Clientes</h1>
           <p className="text-sm text-muted-foreground">{filtered.length} cliente(s) na carteira.</p>
         </div>
-        <Button
-          onClick={() => {
-            setEditing(null);
-            setOpen(true);
-          }}
-        >
-          <Plus className="mr-2 h-4 w-4" /> Novo cliente
-        </Button>
+        <div className="flex flex-wrap gap-2">
+          <Button variant="outline" onClick={() => setImportOpen(true)}>
+            <FileUp className="mr-2 h-4 w-4" /> Importar por PDF
+          </Button>
+          <Button
+            onClick={() => {
+              setEditing(null);
+              setOpen(true);
+            }}
+          >
+            <Plus className="mr-2 h-4 w-4" /> Novo cliente
+          </Button>
+        </div>
       </header>
 
       <div className="flex flex-col gap-3 sm:flex-row">
@@ -205,6 +211,12 @@ function ClientsPage() {
           );
         })}
       </div>
+
+      <ImportClientDialog
+        open={importOpen}
+        onOpenChange={setImportOpen}
+        onSaved={(id) => navigate({ to: "/clientes/$id", params: { id } })}
+      />
 
       <ClientFormDialog
         open={open}
