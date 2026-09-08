@@ -32,7 +32,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { createUserAccount, deleteUserAccount } from "@/lib/users.functions";
+import { createUserAccount, deleteUserAccount, updateUserRole } from "@/lib/users.functions";
 import { friendlyError } from "@/lib/crm";
 import { formatDate } from "@/lib/br";
 
@@ -112,6 +112,44 @@ function CollaboratorsPage() {
       toast.success("Usuário excluído.");
     },
     onError: (e) => toast.error(friendlyError(e, "Não foi possível excluir o usuário.")),
+  });
+
+  const roleFn = useServerFn(updateUserRole);
+  const [editing, setEditing] = useState<null | {
+    id: string;
+    name: string;
+    position: string;
+    phone: string;
+    cpf: string;
+    role: "admin" | "collaborator";
+    originalRole: "admin" | "collaborator";
+  }>(null);
+
+  const saveEdit = useMutation({
+    mutationFn: async () => {
+      if (!editing) return;
+      const { error } = await supabase
+        .from("profiles")
+        .update({
+          name: editing.name.trim(),
+          position: editing.position.trim() || null,
+          phone: editing.phone.trim() || null,
+          cpf: editing.cpf.trim() || null,
+        })
+        .eq("id", editing.id);
+      if (error) throw error;
+      if (session?.isAdmin && editing.role !== editing.originalRole) {
+        await roleFn({ data: { userId: editing.id, role: editing.role } });
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["collaborators"] });
+      queryClient.invalidateQueries({ queryKey: ["profiles"] });
+      queryClient.invalidateQueries({ queryKey: ["session"] });
+      toast.success("Dados atualizados.");
+      setEditing(null);
+    },
+    onError: (e) => toast.error(friendlyError(e, "Não foi possível salvar as alterações.")),
   });
 
   function submitCreate() {
