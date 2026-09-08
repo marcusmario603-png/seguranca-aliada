@@ -1,8 +1,9 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { ShieldCheck, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
+import logoAsset from "@/assets/logo-garantia-protecao.jpg.asset.json";
 
 export const Route = createFileRoute("/")({
   ssr: false,
@@ -37,9 +38,11 @@ function Index() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-sidebar px-6 text-center">
-      <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-sidebar-primary text-sidebar-primary-foreground">
-        <ShieldCheck className="h-7 w-7" />
-      </span>
+      <img
+        src={logoAsset.url}
+        alt="Garantia e Proteção"
+        className="h-32 w-auto rounded-2xl bg-white object-contain p-3 shadow-lg"
+      />
       <h1 className="mt-4 text-2xl font-semibold text-sidebar-foreground">CRM Garantia e Proteção</h1>
       <p className="mt-2 max-w-md text-sm text-sidebar-foreground/70">
         Gestão de clientes, propostas, contratos e documentos de plano de saúde.

@@ -11,13 +11,13 @@ import {
   Settings,
   Menu,
   LogOut,
-  ShieldCheck,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useSession } from "@/hooks/use-session";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
+import logoAsset from "@/assets/logo-garantia-protecao.jpg.asset.json";
 
 export const Route = createFileRoute("/_authenticated")({
   ssr: false,
@@ -69,9 +69,11 @@ function NavLinks({ onNavigate }: { onNavigate?: () => void }) {
 function Brand() {
   return (
     <div className="flex items-center gap-2.5 border-b border-sidebar-border px-4 py-4">
-      <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-        <ShieldCheck className="h-5 w-5" />
-      </span>
+      <img
+        src={logoAsset.url}
+        alt="Garantia e Proteção"
+        className="h-9 w-auto rounded-md bg-white object-contain p-1 shadow-sm"
+      />
       <span className="leading-tight">
         <span className="block text-sm font-semibold text-sidebar-foreground">Garantia e Proteção</span>
         <span className="block text-xs text-sidebar-foreground/60">CRM Plano de Saúde</span>

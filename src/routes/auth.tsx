@@ -1,6 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { ShieldCheck } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
@@ -8,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { friendlyError } from "@/lib/crm";
+import logoAsset from "@/assets/logo-garantia-protecao.jpg.asset.json";
 
 export const Route = createFileRoute("/auth")({
   ssr: false,
@@ -59,9 +59,11 @@ function AuthPage() {
     <div className="flex min-h-screen items-center justify-center bg-sidebar px-4 py-10">
       <div className="w-full max-w-md">
         <div className="mb-6 flex flex-col items-center text-center">
-          <span className="flex h-12 w-12 items-center justify-center rounded-xl bg-sidebar-primary text-sidebar-primary-foreground">
-            <ShieldCheck className="h-6 w-6" />
-          </span>
+          <img
+            src={logoAsset.url}
+            alt="Garantia e Proteção"
+            className="h-28 w-auto rounded-xl bg-white object-contain p-2 shadow-lg"
+          />
           <h1 className="mt-3 text-xl font-semibold text-sidebar-foreground">Garantia e Proteção</h1>
           <p className="text-sm text-sidebar-foreground/70">CRM interno · Plano de Saúde</p>
         </div>
