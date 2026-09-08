@@ -191,6 +191,13 @@ export type Database = {
             referencedRelation: "processes"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "documents_uploaded_by_fkey"
+            columns: ["uploaded_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
         ]
       }
       operators: {
@@ -254,6 +261,13 @@ export type Database = {
             columns: ["process_id"]
             isOneToOne: false
             referencedRelation: "processes"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "process_history_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
@@ -347,6 +361,13 @@ export type Database = {
             columns: ["operator_id"]
             isOneToOne: false
             referencedRelation: "operators"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "processes_responsible_user_id_fkey"
+            columns: ["responsible_user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
