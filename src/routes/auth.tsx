@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { friendlyError } from "@/lib/crm";
 
 export const Route = createFileRoute("/auth")({
@@ -30,7 +29,6 @@ function AuthPage() {
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
@@ -46,24 +44,6 @@ function AuthPage() {
     if (error) { toast.error(friendlyError(error, "Não foi possível entrar.")); return; }
     toast.success("Bem-vindo de volta!");
     navigate({ to: "/dashboard", replace: true });
-  }
-
-  async function signUp(e: React.FormEvent) {
-    e.preventDefault();
-    setLoading(true);
-    const { data, error } = await supabase.auth.signUp({
-      email: email.trim(),
-      password,
-      options: { data: { name }, emailRedirectTo: window.location.origin },
-    });
-    setLoading(false);
-    if (error) { toast.error(friendlyError(error, "Não foi possível criar o acesso.")); return; }
-    if (data.session) {
-      toast.success("Conta criada com sucesso.");
-      navigate({ to: "/dashboard", replace: true });
-    } else {
-      toast.success("Confirme seu e-mail para ativar o acesso.");
-    }
   }
 
   async function recover() {
@@ -89,67 +69,31 @@ function AuthPage() {
         <Card className="shadow-lg">
           <CardHeader>
             <CardTitle>Acesso restrito</CardTitle>
-            <CardDescription>Use suas credenciais corporativas.</CardDescription>
+            <CardDescription>Use suas credenciais corporativas. Novos acessos são criados pelo administrador.</CardDescription>
           </CardHeader>
           <CardContent>
-            <Tabs defaultValue="login">
-              <TabsList className="grid w-full grid-cols-2">
-                <TabsTrigger value="login">Entrar</TabsTrigger>
-                <TabsTrigger value="signup">Criar acesso</TabsTrigger>
-              </TabsList>
-
-              <TabsContent value="login">
-                <form onSubmit={signIn} className="space-y-4 pt-2">
-                  <div className="space-y-1.5">
-                    <Label htmlFor="email">E-mail</Label>
-                    <Input id="email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
-                  </div>
-                  <div className="space-y-1.5">
-                    <Label htmlFor="password">Senha</Label>
-                    <Input
-                      id="password"
-                      type="password"
-                      required
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                    />
-                  </div>
-                  <Button type="submit" className="w-full" disabled={loading}>
-                    Entrar
-                  </Button>
-                  <button type="button" onClick={recover} className="w-full text-sm text-primary hover:underline">
-                    Esqueci minha senha
-                  </button>
-                </form>
-              </TabsContent>
-
-              <TabsContent value="signup">
-                <form onSubmit={signUp} className="space-y-4 pt-2">
-                  <div className="space-y-1.5">
-                    <Label htmlFor="name">Nome completo</Label>
-                    <Input id="name" required value={name} onChange={(e) => setName(e.target.value)} />
-                  </div>
-                  <div className="space-y-1.5">
-                    <Label htmlFor="email2">E-mail</Label>
-                    <Input id="email2" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
-                  </div>
-                  <div className="space-y-1.5">
-                    <Label htmlFor="password2">Senha</Label>
-                    <Input
-                      id="password2"
-                      type="password"
-                      required
-                      minLength={6}
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                    />
-                  </div>
-                  <Button type="submit" className="w-full" disabled={loading}>
-                    Criar acesso
-                  </Button>
-                </form>
-              </TabsContent>
-            </Tabs>
+            <form onSubmit={signIn} className="space-y-4">
+              <div className="space-y-1.5">
+                <Label htmlFor="email">E-mail</Label>
+                <Input id="email" type="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
+              </div>
+              <div className="space-y-1.5">
+                <Label htmlFor="password">Senha</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </div>
+              <Button type="submit" className="w-full" disabled={loading}>
+                Entrar
+              </Button>
+              <button type="button" onClick={recover} className="w-full text-sm text-primary hover:underline">
+                Esqueci minha senha
+              </button>
+            </form>
           </CardContent>
         </Card>
       </div>
