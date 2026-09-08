@@ -13,7 +13,7 @@ import { StatusBadge } from "@/components/StatusBadge";
 import { clientDoc, clientName, type ProcessStatus } from "@/lib/crm";
 import { formatDate, formatDateTime } from "@/lib/br";
 
-export const Route = createFileRoute("/_authenticated/clientes/$id")({
+export const Route = createFileRoute("/_authenticated/clientes_/$id")({
   validateSearch: (search: Record<string, unknown>) => ({
     tab: typeof search.tab === "string" ? search.tab : "informacoes",
   }),
