@@ -266,6 +266,26 @@ function CollaboratorsPage() {
                     disabled={!session?.isAdmin}
                     onCheckedChange={(v) => toggleActive.mutate({ id: p.id, active: v })}
                   />
+                  {(session?.isAdmin || p.id === session?.userId) && (
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      aria-label={`Editar ${p.name}`}
+                      onClick={() =>
+                        setEditing({
+                          id: p.id,
+                          name: p.name || "",
+                          position: p.position || "",
+                          phone: p.phone || "",
+                          cpf: p.cpf || "",
+                          role: p.role as "admin" | "collaborator",
+                          originalRole: p.role as "admin" | "collaborator",
+                        })
+                      }
+                    >
+                      <Pencil className="h-4 w-4" />
+                    </Button>
+                  )}
                   {session?.isAdmin && p.id !== session.userId && (
                     <AlertDialog>
                       <AlertDialogTrigger asChild>
