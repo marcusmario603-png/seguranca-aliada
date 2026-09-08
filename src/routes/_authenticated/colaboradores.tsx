@@ -3,7 +3,7 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useServerFn } from "@tanstack/react-start";
 import { useState } from "react";
 import { toast } from "sonner";
-import { Trash2, UserPlus } from "lucide-react";
+import { Pencil, Trash2, UserPlus } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useSession } from "@/hooks/use-session";
 import { Card, CardContent } from "@/components/ui/card";
@@ -32,7 +32,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { createUserAccount, deleteUserAccount } from "@/lib/users.functions";
+import { createUserAccount, deleteUserAccount, updateUserRole } from "@/lib/users.functions";
 import { friendlyError } from "@/lib/crm";
 import { formatDate } from "@/lib/br";
 
@@ -112,6 +112,44 @@ function CollaboratorsPage() {
       toast.success("Usuário excluído.");
     },
     onError: (e) => toast.error(friendlyError(e, "Não foi possível excluir o usuário.")),
+  });
+
+  const roleFn = useServerFn(updateUserRole);
+  const [editing, setEditing] = useState<null | {
+    id: string;
+    name: string;
+    position: string;
+    phone: string;
+    cpf: string;
+    role: "admin" | "collaborator";
+    originalRole: "admin" | "collaborator";
+  }>(null);
+
+  const saveEdit = useMutation({
+    mutationFn: async () => {
+      if (!editing) return;
+      const { error } = await supabase
+        .from("profiles")
+        .update({
+          name: editing.name.trim(),
+          position: editing.position.trim() || null,
+          phone: editing.phone.trim() || null,
+          cpf: editing.cpf.trim() || null,
+        })
+        .eq("id", editing.id);
+      if (error) throw error;
+      if (session?.isAdmin && editing.role !== editing.originalRole) {
+        await roleFn({ data: { userId: editing.id, role: editing.role } });
+      }
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["collaborators"] });
+      queryClient.invalidateQueries({ queryKey: ["profiles"] });
+      queryClient.invalidateQueries({ queryKey: ["session"] });
+      toast.success("Dados atualizados.");
+      setEditing(null);
+    },
+    onError: (e) => toast.error(friendlyError(e, "Não foi possível salvar as alterações.")),
   });
 
   function submitCreate() {
@@ -228,6 +266,26 @@ function CollaboratorsPage() {
                     disabled={!session?.isAdmin}
                     onCheckedChange={(v) => toggleActive.mutate({ id: p.id, active: v })}
                   />
+                  {(session?.isAdmin || p.id === session?.userId) && (
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      aria-label={`Editar ${p.name}`}
+                      onClick={() =>
+                        setEditing({
+                          id: p.id,
+                          name: p.name || "",
+                          position: p.position || "",
+                          phone: p.phone || "",
+                          cpf: p.cpf || "",
+                          role: p.role as "admin" | "collaborator",
+                          originalRole: p.role as "admin" | "collaborator",
+                        })
+                      }
+                    >
+                      <Pencil className="h-4 w-4" />
+                    </Button>
+                  )}
                   {session?.isAdmin && p.id !== session.userId && (
                     <AlertDialog>
                       <AlertDialogTrigger asChild>
@@ -256,6 +314,81 @@ function CollaboratorsPage() {
           </Card>
         ))}
       </div>
+
+      <Dialog open={!!editing} onOpenChange={(o) => !o && setEditing(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Editar dados</DialogTitle>
+            <DialogDescription>Atualize nome, cargo e contato do colaborador.</DialogDescription>
+          </DialogHeader>
+          {editing && (
+            <div className="grid gap-3">
+              <div className="grid gap-1.5">
+                <Label htmlFor="e-name">Nome</Label>
+                <Input
+                  id="e-name"
+                  value={editing.name}
+                  onChange={(e) => setEditing({ ...editing, name: e.target.value })}
+                />
+              </div>
+              <div className="grid gap-1.5">
+                <Label htmlFor="e-position">Cargo</Label>
+                <Input
+                  id="e-position"
+                  value={editing.position}
+                  onChange={(e) => setEditing({ ...editing, position: e.target.value })}
+                />
+              </div>
+              <div className="grid gap-1.5">
+                <Label htmlFor="e-phone">Telefone</Label>
+                <Input
+                  id="e-phone"
+                  value={editing.phone}
+                  onChange={(e) => setEditing({ ...editing, phone: e.target.value })}
+                />
+              </div>
+              <div className="grid gap-1.5">
+                <Label htmlFor="e-cpf">CPF</Label>
+                <Input id="e-cpf" value={editing.cpf} onChange={(e) => setEditing({ ...editing, cpf: e.target.value })} />
+              </div>
+              {session?.isAdmin && (
+                <div className="grid gap-1.5">
+                  <Label>Perfil</Label>
+                  <Select
+                    value={editing.role}
+                    onValueChange={(v) => setEditing({ ...editing, role: v as "admin" | "collaborator" })}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="collaborator">Colaborador</SelectItem>
+                      <SelectItem value="admin">Administrador</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
+            </div>
+          )}
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setEditing(null)}>
+              Cancelar
+            </Button>
+            <Button
+              onClick={() => {
+                if (!editing?.name.trim()) {
+                  toast.error("Informe o nome.");
+                  return;
+                }
+                saveEdit.mutate();
+              }}
+              disabled={saveEdit.isPending}
+            >
+              {saveEdit.isPending ? "Salvando..." : "Salvar"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
 
       {!session?.isAdmin && (
         <p className="text-xs text-muted-foreground">Somente administradores podem ativar ou desativar acessos.</p>
