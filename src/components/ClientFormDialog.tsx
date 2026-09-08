@@ -128,7 +128,7 @@ export function ClientFormDialog({
       if (client?.id) {
         const { data, error } = await supabase
           .from("clients")
-          .update(payload)
+          .update(payload as never)
           .eq("id", client.id)
           .select("id")
           .single();
@@ -301,7 +301,7 @@ function Field({
   children,
 }: {
   label: string;
-  error?: string;
+  error?: string | undefined;
   children: React.ReactNode;
 }) {
   return (

@@ -44,7 +44,7 @@ export function useMoveProcess() {
   return useMutation({
     mutationFn: async (input: { id: string; status: ProcessStatus; reason?: string }) => {
       const payload: Record<string, unknown> = { status: input.status };
-      if (input.status === "cancelled") payload.cancellation_reason = input.reason;
+      if (input.status === "cancelled") payload["cancellation_reason"] = input.reason;
       const { error } = await supabase.from("processes").update(payload as never).eq("id", input.id);
       if (error) throw error;
       return input.status;

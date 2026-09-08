@@ -19,7 +19,7 @@ import {
 import { DOC_TYPES, friendlyError } from "@/lib/crm";
 import { formatBytes, formatDateTime } from "@/lib/br";
 
-export function useDocuments(filter: { clientId?: string; processId?: string } = {}) {
+export function useDocuments(filter: { clientId?: string | undefined; processId?: string | undefined } = {}) {
   return useQuery({
     queryKey: ["documents", filter.clientId ?? null, filter.processId ?? null],
     queryFn: async () => {

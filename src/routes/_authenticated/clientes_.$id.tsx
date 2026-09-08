@@ -14,9 +14,6 @@ import { clientDoc, clientName, type ProcessStatus } from "@/lib/crm";
 import { formatDate, formatDateTime } from "@/lib/br";
 
 export const Route = createFileRoute("/_authenticated/clientes_/$id")({
-  validateSearch: (search: Record<string, unknown>) => ({
-    tab: typeof search.tab === "string" ? search.tab : "informacoes",
-  }),
   head: () => ({
     meta: [
       { title: "Ficha do cliente | CRM Garantia e Proteção" },
@@ -32,7 +29,7 @@ export const Route = createFileRoute("/_authenticated/clientes_/$id")({
 
 function ClientDetail() {
   const { id } = Route.useParams();
-  const { tab } = Route.useSearch();
+  const [tab, setTab] = useState("informacoes");
   const navigate = useNavigate();
   const [editOpen, setEditOpen] = useState(false);
   const [processOpen, setProcessOpen] = useState(false);
@@ -135,7 +132,7 @@ function ClientDetail() {
         </div>
       </header>
 
-      <Tabs value={tab} onValueChange={(v) => navigate({ to: ".", search: { tab: v }, replace: true })}>
+      <Tabs value={tab} onValueChange={setTab}>
         <TabsList className="flex w-full flex-wrap justify-start">
           <TabsTrigger value="informacoes">Informações</TabsTrigger>
           <TabsTrigger value="processos">Processos</TabsTrigger>

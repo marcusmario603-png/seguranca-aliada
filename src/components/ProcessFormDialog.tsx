@@ -30,7 +30,7 @@ import {
   type ProcessStatus,
 } from "@/lib/crm";
 
-type ProcessRow = Record<string, unknown> & { id?: string };
+
 
 const empty = {
   client_id: "",
@@ -58,7 +58,7 @@ export function ProcessFormDialog({
 }: {
   open: boolean;
   onOpenChange: (v: boolean) => void;
-  process?: ProcessRow | null;
+  process?: import("@/lib/crm").ProcessRow | null;
   clientId?: string;
   onSaved?: (id: string) => void;
 }) {
