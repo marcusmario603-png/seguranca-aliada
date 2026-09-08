@@ -1,4 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
+import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 type CreateUserInput = {
   email: string;
@@ -17,9 +18,7 @@ async function assertAdmin(context: { supabase: any; userId: string }) {
 }
 
 export const createUserAccount = createServerFn({ method: "POST" })
-  .middleware([
-    (await import("@/integrations/supabase/auth-middleware")).requireSupabaseAuth,
-  ])
+  .middleware([requireSupabaseAuth])
   .inputValidator((input: CreateUserInput) => input)
   .handler(async ({ data, context }) => {
     await assertAdmin(context);
@@ -47,9 +46,7 @@ export const createUserAccount = createServerFn({ method: "POST" })
   });
 
 export const deleteUserAccount = createServerFn({ method: "POST" })
-  .middleware([
-    (await import("@/integrations/supabase/auth-middleware")).requireSupabaseAuth,
-  ])
+  .middleware([requireSupabaseAuth])
   .inputValidator((input: { userId: string }) => input)
   .handler(async ({ data, context }) => {
     await assertAdmin(context);
