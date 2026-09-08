@@ -41,7 +41,7 @@ function Index() {
       <img
         src={logoAsset.url}
         alt="Garantia e Proteção"
-        className="h-32 w-auto object-contain"
+        className="h-32 w-auto object-contain drop-shadow-[0_2px_6px_rgba(255,255,255,0.35)]"
       />
       <h1 className="mt-4 text-2xl font-semibold text-sidebar-foreground">CRM Garantia e Proteção</h1>
       <p className="mt-2 max-w-md text-sm text-sidebar-foreground/70">

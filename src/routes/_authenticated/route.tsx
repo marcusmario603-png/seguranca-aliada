@@ -72,7 +72,7 @@ function Brand() {
       <img
         src={logoAsset.url}
         alt="Garantia e Proteção"
-        className="h-9 w-auto object-contain"
+        className="h-9 w-auto object-contain drop-shadow-[0_1px_3px_rgba(255,255,255,0.35)]"
       />
       <span className="leading-tight">
         <span className="block text-sm font-semibold text-sidebar-foreground">Garantia e Proteção</span>
