@@ -32,7 +32,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { createUserAccount, deleteUserAccount, updateUserRole } from "@/lib/users.functions";
+import { createUserAccount, deleteUserAccount, listStaff, updateUserRole } from "@/lib/users.functions";
 import { friendlyError } from "@/lib/crm";
 import { formatDate } from "@/lib/br";
 
@@ -54,19 +54,10 @@ function CollaboratorsPage() {
   const queryClient = useQueryClient();
   const { data: session } = useSession();
 
+  const staffFn = useServerFn(listStaff);
   const { data: people = [] } = useQuery({
     queryKey: ["collaborators"],
-    queryFn: async () => {
-      const [{ data: profiles, error }, { data: roles }] = await Promise.all([
-        supabase.from("profiles").select("*").order("name"),
-        supabase.from("user_roles").select("user_id, role"),
-      ]);
-      if (error) throw error;
-      return (profiles || []).map((p) => ({
-        ...p,
-        role: (roles || []).find((r) => r.user_id === p.id)?.role || "collaborator",
-      }));
-    },
+    queryFn: async () => staffFn({}),
   });
 
   const toggleActive = useMutation({
@@ -249,7 +240,7 @@ function CollaboratorsPage() {
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">
                   <p className="truncate font-medium">{p.name}</p>
-                  <p className="truncate text-xs text-muted-foreground">{p.email}</p>
+                  <p className="truncate text-xs text-muted-foreground">{p.email || "Contato restrito"}</p>
                 </div>
                 <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
                   {p.role === "admin" ? "Administrador" : "Colaborador"}
