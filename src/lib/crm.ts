@@ -86,3 +86,42 @@ export function friendlyError(error: unknown, fallback: string) {
   if (msg.includes("Invalid login credentials")) return "E-mail ou senha inválidos.";
   return fallback;
 }
+
+export type ClientLite = {
+  id: string;
+  client_type: string;
+  full_name?: string | null;
+  company_name?: string | null;
+  trade_name?: string | null;
+  cpf?: string | null;
+  cnpj?: string | null;
+  phone?: string | null;
+};
+
+export type ProcessRow = {
+  id: string;
+  code: number;
+  status: ProcessStatus;
+  plan_type: string;
+  lives_quantity: number;
+  client_id: string;
+  operator_id: string | null;
+  responsible_user_id: string | null;
+  coverage: string | null;
+  accommodation: string | null;
+  network_type: string | null;
+  assistance_segment: string | null;
+  coparticipation: boolean;
+  reimbursement: boolean;
+  proposal_date: string | null;
+  signed_date: string | null;
+  effective_date: string | null;
+  cancelled_date: string | null;
+  cancellation_reason: string | null;
+  notes: string | null;
+  created_at: string;
+  updated_at: string;
+  clients: ClientLite;
+  operators: { id: string; name: string } | null;
+  profiles: { id: string; name: string } | null;
+};
