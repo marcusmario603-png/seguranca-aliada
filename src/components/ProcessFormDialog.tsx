@@ -143,9 +143,9 @@ export function ProcessFormDialog({
     },
     onError: (e) => {
       const m = (e as Error).message;
-      if (m === "client_required") return toast.error("Selecione o cliente.");
-      if (m === "responsible_required") return toast.error("Selecione o responsável.");
-      if (m === "reason_required") return toast.error("Informe o motivo do cancelamento.");
+      if (m === "client_required") { toast.error("Selecione o cliente."); return; }
+      if (m === "responsible_required") { toast.error("Selecione o responsável."); return; }
+      if (m === "reason_required") { toast.error("Informe o motivo do cancelamento."); return; }
       toast.error(friendlyError(e, "Não foi possível salvar o processo."));
     },
   });

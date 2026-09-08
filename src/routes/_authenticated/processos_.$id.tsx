@@ -274,7 +274,7 @@ function ProcessDetail() {
             </Button>
             <Button
               onClick={() => {
-                if (!reason.trim()) return toast.error("Informe o motivo do cancelamento.");
+                if (!reason.trim()) { toast.error("Informe o motivo do cancelamento."); return; }
                 move.mutate({ id, status: "cancelled", reason });
                 setCancelOpen(false);
               }}

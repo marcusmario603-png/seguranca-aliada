@@ -41,7 +41,7 @@ function DocumentsPage() {
 
   async function openDoc(path: string) {
     const { data, error } = await supabase.storage.from("documents").createSignedUrl(path, 60);
-    if (error || !data) return toast.error("Não foi possível abrir o documento.");
+    if (error || !data) { toast.error("Não foi possível abrir o documento."); return; }
     window.open(data.signedUrl, "_blank", "noopener");
   }
 

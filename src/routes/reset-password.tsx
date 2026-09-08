@@ -32,7 +32,7 @@ function ResetPassword() {
     setLoading(true);
     const { error } = await supabase.auth.updateUser({ password });
     setLoading(false);
-    if (error) return toast.error("Não foi possível atualizar a senha. Solicite um novo link.");
+    if (error) { toast.error("Não foi possível atualizar a senha. Solicite um novo link."); return; }
     toast.success("Senha atualizada com sucesso.");
     navigate({ to: "/dashboard", replace: true });
   }

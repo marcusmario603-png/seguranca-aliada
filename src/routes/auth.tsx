@@ -43,7 +43,7 @@ function AuthPage() {
     setLoading(true);
     const { error } = await supabase.auth.signInWithPassword({ email: email.trim(), password });
     setLoading(false);
-    if (error) return toast.error(friendlyError(error, "Não foi possível entrar."));
+    if (error) { toast.error(friendlyError(error, "Não foi possível entrar.")); return; }
     toast.success("Bem-vindo de volta!");
     navigate({ to: "/dashboard", replace: true });
   }
@@ -57,7 +57,7 @@ function AuthPage() {
       options: { data: { name }, emailRedirectTo: window.location.origin },
     });
     setLoading(false);
-    if (error) return toast.error(friendlyError(error, "Não foi possível criar o acesso."));
+    if (error) { toast.error(friendlyError(error, "Não foi possível criar o acesso.")); return; }
     if (data.session) {
       toast.success("Conta criada com sucesso.");
       navigate({ to: "/dashboard", replace: true });
@@ -67,11 +67,11 @@ function AuthPage() {
   }
 
   async function recover() {
-    if (!email.trim()) return toast.error("Informe seu e-mail para recuperar a senha.");
+    if (!email.trim()) { toast.error("Informe seu e-mail para recuperar a senha."); return; }
     const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), {
       redirectTo: `${window.location.origin}/reset-password`,
     });
-    if (error) return toast.error("Não foi possível enviar o e-mail de recuperação.");
+    if (error) { toast.error("Não foi possível enviar o e-mail de recuperação."); return; }
     toast.success("Enviamos um link de recuperação para seu e-mail.");
   }
 
