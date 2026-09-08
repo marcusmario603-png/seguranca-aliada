@@ -1,8 +1,9 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { ShieldCheck, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
+import logoAsset from "@/assets/logo-garantia-protecao.jpg.asset.json";
 
 export const Route = createFileRoute("/")({
   ssr: false,
