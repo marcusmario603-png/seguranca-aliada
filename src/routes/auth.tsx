@@ -62,7 +62,7 @@ function AuthPage() {
           <img
             src={logoAsset.url}
             alt="Garantia e Proteção"
-            className="h-20 w-auto object-contain"
+            className="h-28 w-auto object-contain"
           />
           <h1 className="mt-3 text-xl font-semibold text-sidebar-foreground">Garantia e Proteção</h1>
           <p className="text-sm text-sidebar-foreground/70">CRM interno · Plano de Saúde</p>
