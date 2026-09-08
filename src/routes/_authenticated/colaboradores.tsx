@@ -240,7 +240,7 @@ function CollaboratorsPage() {
               <div className="flex items-start justify-between gap-2">
                 <div className="min-w-0">
                   <p className="truncate font-medium">{p.name}</p>
-                  <p className="truncate text-xs text-muted-foreground">{p.email}</p>
+                  <p className="truncate text-xs text-muted-foreground">{p.email || "Contato restrito"}</p>
                 </div>
                 <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
                   {p.role === "admin" ? "Administrador" : "Colaborador"}
