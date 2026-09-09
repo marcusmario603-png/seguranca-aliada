@@ -21,6 +21,7 @@ import logoAsset from "@/assets/logo-garantia-protecao.jpg.asset.json";
 
 export const Route = createFileRoute("/_authenticated")({
   ssr: false,
+  staticData: { sitemap: "exclude-subtree" },
   beforeLoad: async () => {
     const { data, error } = await supabase.auth.getUser();
     if (error || !data.user) throw redirect({ to: "/auth" });

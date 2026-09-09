@@ -7,6 +7,7 @@ import logoAsset from "@/assets/logo-garantia-protecao.jpg.asset.json";
 
 export const Route = createFileRoute("/")({
   ssr: false,
+  staticData: { sitemap: true },
   head: () => ({
     meta: [
       { title: "CRM Garantia e Proteção | Plano de Saúde" },
