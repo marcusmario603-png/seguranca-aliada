@@ -64,7 +64,7 @@ function AuthPage() {
             alt="Garantia e Proteção"
             className="h-28 w-auto rounded-xl bg-white object-contain p-2 shadow-lg"
           />
-          <h1 className="mt-3 text-xl font-semibold text-sidebar-foreground">{"\n"}</h1>
+          <h1 className="mt-3 text-xl font-semibold text-sidebar-foreground">Acesso ao CRM</h1>
           <p className="text-sm text-sidebar-foreground/70">CRM interno · Plano de Saúde</p>
         </div>
 
