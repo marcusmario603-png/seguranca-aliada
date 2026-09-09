@@ -12,6 +12,7 @@ import { ALL_STATUSES, PLAN_TYPES, STATUS_LABEL, clientName, type ProcessStatus 
 import { formatDate } from "@/lib/br";
 
 export const Route = createFileRoute("/_authenticated/processos")({
+  staticData: { sitemap: false },
   head: () => ({
     meta: [
       { title: "Processos | CRM Garantia e Proteção" },

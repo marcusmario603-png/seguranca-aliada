@@ -11,6 +11,7 @@ import { clientName } from "@/lib/crm";
 import { formatBytes, formatDateTime } from "@/lib/br";
 
 export const Route = createFileRoute("/_authenticated/documentos")({
+  staticData: { sitemap: false },
   head: () => ({
     meta: [
       { title: "Documentos | CRM Garantia e Proteção" },

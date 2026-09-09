@@ -13,6 +13,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { friendlyError } from "@/lib/crm";
 
 export const Route = createFileRoute("/_authenticated/configuracoes")({
+  staticData: { sitemap: false },
   head: () => ({
     meta: [
       { title: "Configurações | CRM Garantia e Proteção" },

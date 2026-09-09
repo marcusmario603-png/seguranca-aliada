@@ -26,6 +26,7 @@ import {
 } from "@/lib/crm";
 
 export const Route = createFileRoute("/_authenticated/pipeline")({
+  staticData: { sitemap: false },
   head: () => ({
     meta: [
       { title: "Pipeline | CRM Garantia e Proteção" },

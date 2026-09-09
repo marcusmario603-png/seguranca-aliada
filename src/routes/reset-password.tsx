@@ -9,6 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 
 export const Route = createFileRoute("/reset-password")({
   ssr: false,
+  staticData: { sitemap: false },
   head: () => ({
     meta: [
       { title: "Redefinir senha | CRM Garantia e Proteção" },

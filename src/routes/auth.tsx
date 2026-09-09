@@ -11,6 +11,7 @@ import logoAsset from "@/assets/logo-garantia-protecao.jpg.asset.json";
 
 export const Route = createFileRoute("/auth")({
   ssr: false,
+  staticData: { sitemap: false },
   head: () => ({
     meta: [
       { title: "Acesso ao CRM | Garantia e Proteção" },

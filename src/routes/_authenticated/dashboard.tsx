@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ALL_STATUSES, PIPELINE_STAGES, STATUS_LABEL, type ProcessStatus } from "@/lib/crm";
 
 export const Route = createFileRoute("/_authenticated/dashboard")({
+  staticData: { sitemap: false },
   head: () => ({
     meta: [
       { title: "Dashboard | CRM Garantia e Proteção" },
