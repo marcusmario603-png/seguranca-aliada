@@ -37,6 +37,7 @@ import { friendlyError } from "@/lib/crm";
 import { formatDate } from "@/lib/br";
 
 export const Route = createFileRoute("/_authenticated/colaboradores")({
+  staticData: { sitemap: false },
   head: () => ({
     meta: [
       { title: "Colaboradores | CRM Garantia e Proteção" },

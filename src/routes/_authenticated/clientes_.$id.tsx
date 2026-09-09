@@ -14,6 +14,7 @@ import { clientDoc, clientName, type ProcessStatus } from "@/lib/crm";
 import { formatDate, formatDateTime } from "@/lib/br";
 
 export const Route = createFileRoute("/_authenticated/clientes_/$id")({
+  staticData: { sitemap: false },
   head: () => ({
     meta: [
       { title: "Ficha do cliente | CRM Garantia e Proteção" },

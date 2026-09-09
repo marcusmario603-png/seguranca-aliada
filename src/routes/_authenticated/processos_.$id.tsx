@@ -32,6 +32,7 @@ import {
 import { calcAge, formatDate, formatDateTime, maskCPF } from "@/lib/br";
 
 export const Route = createFileRoute("/_authenticated/processos_/$id")({
+  staticData: { sitemap: false },
   head: () => ({
     meta: [
       { title: "Processo | CRM Garantia e Proteção" },

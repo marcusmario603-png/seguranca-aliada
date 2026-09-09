@@ -26,6 +26,7 @@ import { clientDoc, clientName, friendlyError, type ProcessStatus } from "@/lib/
 import { formatDate } from "@/lib/br";
 
 export const Route = createFileRoute("/_authenticated/clientes")({
+  staticData: { sitemap: false },
   head: () => ({
     meta: [
       { title: "Clientes | CRM Garantia e Proteção" },
