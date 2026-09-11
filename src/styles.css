@@ -113,8 +113,9 @@
   * {
     border-color: var(--color-border);
   }
-  #lovable-badge{
+  #lovable-badge {
     display: none !important;
+  }
 
   body {
     background-color: var(--color-background);
@@ -127,3 +128,4 @@
       sans-serif;
   }
 }
+
